@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,inital-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="row calc w-50  m-auto">
+        <div id="view" class="col-12 border border-info d-block text-right">
+            <p id="show">0</p>
+            <p id="result"></p>
+        </div>
+        <button class="col-3 btn btn-primary p-3" onclick="ce()">CE</button>
+        <button class="col-3 btn btn-light p-3" onclick="clr()">C</button>
+        <button class="col-3 btn btn-light p-3" onclick="delNum()"><<</button>
+        <button class="col-3 btn btn-danger p-3 trans" onclick=" trans('/')">/</button><br>
+        <button class="col-3 btn btn-light p-3" onclick="numShow(7)">7</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(8)">8</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(9)">9</button>
+        <button class="col-3 btn btn-danger p-3 trans" onclick="trans('*')">X</button><br>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(4)">4</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(5)">5</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(6)">6</button>
+        <button class="col-3 btn btn-danger p-3 trans" onclick="trans('-')">-</button><br>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(1)">1</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(2)">2</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(3)">3</button>
+        <button class="col-3 btn btn-danger p-3 trans" onclick="trans('+')">+</button><br>
+        <button class="col-3 btn btn-light p-3 " onclick="mines('-')">+-</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow(0)">0</button>
+        <button class="col-3 btn btn-light p-3 " onclick="numShow('.')">.</button>
+        <button class="col-3 btn btn-success p-3 trans" onclick="equal('=')">=</button><br>
+    </div>
+
+    <div id="num1"></div>
+    <div id="num2"></div>
+    <script src="js/jquary.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+        var showNum = "";
+        var showResult = "";
+        var num1 = 0;
+        var tran = "";
+        var num2 = 0;
+        var result = 0;
+
+        showNum = document.getElementById("show");
+        showResult = document.getElementById("result");
+
+        function numShow(n) {
+            if (showNum.innerHTML == 0) {
+                showNum.innerHTML = "";
+                showNum.innerHTML = n;
+
+            } else {
+                showNum.innerHTML += n;
+            }
+            if (tran == "") {
+                num1 = parseFloat(showNum.innerHTML);
+                result = num1
+            } else {
+                num2 = parseFloat(showNum.innerHTML);
+            }
+        }
+
+        function trans(t) {
+            console.log(t);
+            if (tran == "") {
+                result = num1
+            } else if (tran != '' && num2 > 0) {
+                equal('=');
+            }
+            tran = t;
+            showNum.innerHTML = "";
+            showResult.innerHTML = result;
+        }
+
+        function equal(e) {
+            console.log("Start switch" + tran);
+            switch (tran) {
+                case '+':
+                    result = result + num2;
+                    console.log(num1 + " " + num2);
+                    console.log("result + = " + result);
+                    break;
+                case '-':
+                    result = result - num2;
+                    console.log(num1 + " " + num2);
+                    console.log("result + = " + result);
+                    break;
+                case '*':
+                    result = result * num2;
+                    console.log(num1 + " " + num2);
+                    console.log("result + = " + result);
+                    break;
+                case '/':
+                    result = result / num2;
+                    console.log(num1 + " " + num2);
+                    console.log("result + = " + result);
+                    break;
+            }
+            showNum.innerHTML = " ";
+            showResult.innerHTML = result;
+            num2 = 0;
+            console.log(' num2 after result' + num2);
+            console.log(' tran after result' + tran);
+        }
+        function clr() {
+            num1 = 0;
+            tran = "";
+            num2 = 0;
+            result = 0;
+            showNum.innerHTML = 0;
+            showResult.innerHTML = '';
+        }
+        function delNum() {
+            var strnum1 = "";
+            var strnum2 = "";
+            if (num1 >= 0 && num2 == 0) {
+                strnum1 = num1;
+                console.log(typeof (strnum1));
+                var arrNum1 = num1.toString().split("");
+                console.log(arrNum1);
+                arrNum1.pop();
+                num1 = arrNum1.join("");
+                showNum.innerHTML = num1;
+                if(num1 ==""){
+                    showNum.innerHTML=0;
+                }
+            } else if (num1 > 0 && num2 > 0) {
+                strnum2 = num2;
+                var arrNum2 = num2.toString().split("");
+                console.log(arrNum2);
+                arrNum2.pop();
+                num2 = arrNum2.join("");
+                showNum.innerHTML = num2;
+                if(num2 ==""){
+                    showNum.innerHTML=0;
+                }
+            }
+        }
+        function mines(m) {
+            var mins = m + showNum.innerHTML;
+            showNum.innerHTML = mins;
+            if (num1 >= 0 && num2 == 0) {
+                showNum.innerHTML = mins;
+                num1 = m + num1;
+            } else if (num1 > 0 && num2 > 0) {
+                showNum.innerHTML = mins;
+                num2 = m + num2;
+            }
+        }
+        function ce() {
+            
+          
+            if (num1 >= 0 && num2 == 0) {
+                showNum.innerHTML = 0;
+                num1 = 0;
+            } else if (num1 > 0 && num2 > 0) {
+                showNum.innerHTML = 0;
+                num2 = 0;
+            }
+        }
+    </script>
+</body>
+
+</html>
